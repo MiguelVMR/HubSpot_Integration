@@ -1,6 +1,7 @@
 package com.integracao.hubspot.services.impl;
 
 import com.integracao.hubspot.dtos.CreateUserDTO;
+import com.integracao.hubspot.exceptions.UserException;
 import com.integracao.hubspot.models.RolesModel;
 import com.integracao.hubspot.models.UserModel;
 import com.integracao.hubspot.repository.RoleRepository;
@@ -36,10 +37,8 @@ public class UserServiceImpl implements UserService {
         var role = roleRepository.findByName(RolesModel.Values.BASIC.name().toLowerCase());
         var userDB = userRepository.findByUsername(createUserDTO.username());
         if (userDB.isPresent()) {
-            //Criar exception
-            throw new RuntimeException("Username already exists");
+            throw new UserException("Username already exists");
         }
-
         var user =  new UserModel();
         user.setUsername(createUserDTO.username());
         user.setPassword(passwordEncoder.encode(createUserDTO.password()));

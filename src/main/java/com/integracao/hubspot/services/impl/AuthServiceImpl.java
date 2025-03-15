@@ -2,10 +2,10 @@ package com.integracao.hubspot.services.impl;
 
 import com.integracao.hubspot.dtos.LoginRequestRecordDTO;
 import com.integracao.hubspot.dtos.LoginResponseRecordDTO;
+import com.integracao.hubspot.exceptions.LoginException;
 import com.integracao.hubspot.models.RolesModel;
 import com.integracao.hubspot.repository.UserRepository;
 import com.integracao.hubspot.services.AuthService;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -41,8 +41,7 @@ public class AuthServiceImpl implements AuthService {
     public LoginResponseRecordDTO login(LoginRequestRecordDTO loginRequest) {
         var user = userRepository.findByUsername(loginRequest.username());
         if(user.isEmpty() || !user.get().isLoginCorrect(loginRequest, passwordEncoder)) {
-            //Criar Exception Personalizada
-            throw new BadCredentialsException("Invalid username or password");
+            throw new LoginException("Username or password incorrect");
         }
         var now = Instant.now();
 
@@ -60,7 +59,6 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-
         return new LoginResponseRecordDTO(jwtValue,300L);
     }
 }

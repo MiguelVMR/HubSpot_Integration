@@ -20,21 +20,21 @@ public class HubSpotTokenCache {
             .maximumSize(100)
             .build();
 
-    public void saveTokens(String code, HubSpotResponse hubSpotResponse) {
-        tokenCache.put(code, hubSpotResponse);
+    public void saveTokens(String userId, HubSpotResponse hubSpotResponse) {
+        tokenCache.put(userId, hubSpotResponse);
     }
 
-    public HubSpotResponse getToken(String code) {
-        return tokenCache.getIfPresent(code);
+    public HubSpotResponse getToken(String userId) {
+        return tokenCache.getIfPresent(userId);
     }
 
-    public void removeToken(String code) {
-        tokenCache.invalidate(code);
+    public void removeToken(String userId) {
+        tokenCache.invalidate(userId);
     }
 
-    public HubSpotResponse updateToken(String code,HubSpotResponse hubSpotResponse) {
-        removeToken(code);
-        saveTokens(code, hubSpotResponse);
+    public HubSpotResponse updateToken(String userId,HubSpotResponse hubSpotResponse) {
+        removeToken(userId);
+        saveTokens(userId, hubSpotResponse);
         return hubSpotResponse;
     }
 

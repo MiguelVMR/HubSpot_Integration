@@ -20,9 +20,27 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(HubSpotIntegrationError.class)
-    public ResponseEntity<ErrorRecorddResponse> handleNotFoundException(HubSpotIntegrationError ex){
+    public ResponseEntity<ErrorRecorddResponse> handleIntegrationException(HubSpotIntegrationError ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorRecorddResponse(HttpStatus.BAD_REQUEST.value(),ex.getMessage(),null));
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorRecorddResponse> handleNotFoundException(NotFoundException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorRecorddResponse(HttpStatus.FOUND.value(),ex.getMessage(),null));
+    }
+
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<ErrorRecorddResponse> handleUserException(UserException ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorRecorddResponse(HttpStatus.CONFLICT.value(),ex.getMessage(),null));
+    }
+
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity<ErrorRecorddResponse> handleLoginException(LoginException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErrorRecorddResponse(HttpStatus.UNAUTHORIZED.value(),ex.getMessage(),null));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
