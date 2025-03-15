@@ -7,6 +7,6 @@ package com.integracao.hubspot.dtos;
 * @since 14/03/2025
 */
 public record ContatoRecordDTO(
-        ContactaProperties properties
+        ContactaPropertiesDTO properties
 ) {
 }

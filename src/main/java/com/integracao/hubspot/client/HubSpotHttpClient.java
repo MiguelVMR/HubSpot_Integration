@@ -3,7 +3,6 @@ package com.integracao.hubspot.client;
 import com.integracao.hubspot.configs.configModels.CustomModelConfig;
 import com.integracao.hubspot.dtos.HubSpotResponse;
 import com.integracao.hubspot.exceptions.HubSpotIntegrationError;
-import com.integracao.hubspot.infra.HubSpotTokenCache;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;

@@ -2,6 +2,7 @@ package com.integracao.hubspot.services;
 
 import com.integracao.hubspot.dtos.ContatoRecordDTO;
 import com.integracao.hubspot.dtos.HubSpotContactPropertiesDTO;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public interface ContatoService {
 
-    void createContact(ContatoRecordDTO contactData);
+    void createContact(ContatoRecordDTO contactData, JwtAuthenticationToken jwtToken);
 
-    List<HubSpotContactPropertiesDTO> findAllContacts();
+    List<HubSpotContactPropertiesDTO> findAllContacts(JwtAuthenticationToken jwtToken);
 }

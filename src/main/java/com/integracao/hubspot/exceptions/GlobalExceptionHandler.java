@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HubSpotIntegrationError.class)
     public ResponseEntity<ErrorRecorddResponse> handleNotFoundException(HubSpotIntegrationError ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorRecorddResponse(HttpStatus.BAD_REQUEST.value(),ex.getMessage(),null));
     }
 

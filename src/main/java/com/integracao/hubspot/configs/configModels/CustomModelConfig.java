@@ -14,5 +14,6 @@ public class CustomModelConfig {
     private String tokenUrl;
     private String contatoUrl;
     private String scope;
+    private String senhaAdmin;
     private HubspotData hubspotData;
 }

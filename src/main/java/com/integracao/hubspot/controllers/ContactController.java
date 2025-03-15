@@ -5,6 +5,7 @@ import com.integracao.hubspot.dtos.ContatoRecordDTO;
 import com.integracao.hubspot.dtos.HubSpotContactPropertiesDTO;
 import com.integracao.hubspot.services.ContatoService;
 import org.springframework.http.*;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,15 +27,15 @@ public class ContactController implements ContactControllerInterface {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Void> createContact(@RequestBody ContatoRecordDTO contactData) {
-        contatoService.createContact(contactData);
+    public ResponseEntity<Void> createContact(@RequestBody ContatoRecordDTO contactData, JwtAuthenticationToken jwtToken) {
+        contatoService.createContact(contactData,jwtToken);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<HubSpotContactPropertiesDTO>> listContacts() {
+    public ResponseEntity<List<HubSpotContactPropertiesDTO>> listContacts(JwtAuthenticationToken jwtToken) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(contatoService.findAllContacts());
+                .body(contatoService.findAllContacts(jwtToken));
     }
 
 }

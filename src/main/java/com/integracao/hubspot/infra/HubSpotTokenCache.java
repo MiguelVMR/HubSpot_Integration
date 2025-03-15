@@ -32,9 +32,10 @@ public class HubSpotTokenCache {
         tokenCache.invalidate(code);
     }
 
-    public void updateToken(String code,HubSpotResponse hubSpotResponse) {
+    public HubSpotResponse updateToken(String code,HubSpotResponse hubSpotResponse) {
         removeToken(code);
         saveTokens(code, hubSpotResponse);
+        return hubSpotResponse;
     }
 
 

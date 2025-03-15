@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  sql:
+    init:
+      mode: always
   datasource:
     url: jdbc:postgresql://localhost:5432/hubSpot
     username: ${USER_DB}
@@ -14,6 +17,13 @@ spring:
         jdbc:
           lob:
             non-contextual-creation: true
+    defer-datasource-initialization: true
+
+jwt:
+  private:
+    key: classpath:app.key
+  public:
+    key: classpath:app.pub
 
 
 custom:
@@ -21,6 +31,7 @@ custom:
   tokenUrl: "https://api.hubapi.com/oauth/v1/token"
   contatoUrl: "https://api.hubapi.com/crm/v3/objects/contacts"
   scope: ${SCOPE}
+  senhaAdmin: ${SENHA_ADMIN}
   hubspotData:
     clientId: ${CLIENT_ID}
     clientSecret: ${CLIENT_SECRET}

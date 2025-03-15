@@ -24,16 +24,16 @@ public class HubSpotServiceImpl implements HubSpotService {
     }
 
     @Override
-    public void geraTokenAcess(String code) {
+    public void geraTokenAcess(String code, String state) {
         HubSpotResponse hubSpotResponse = hubSpotClient.geraTokenAcess(code);
-        hubSpotTokenCache.saveTokens(code, hubSpotResponse);
+        hubSpotTokenCache.saveTokens(state, hubSpotResponse);
     }
 
     @Override
-    public void atualizaTokenAcess(String code) {
-        HubSpotResponse tokens = hubSpotTokenCache.getToken(code);
-        HubSpotResponse hubSpotResponse = hubSpotClient.atualizaTokenAcess(tokens);
-        hubSpotTokenCache.updateToken(code, hubSpotResponse);
+    public HubSpotResponse atualizaTokenAcess(String userId) {
+        HubSpotResponse hubSpotCredencials = hubSpotTokenCache.getToken(userId);
+        HubSpotResponse hubSpotResponse = hubSpotClient.atualizaTokenAcess(hubSpotCredencials);
+        return hubSpotTokenCache.updateToken(userId, hubSpotResponse);
     }
 
 

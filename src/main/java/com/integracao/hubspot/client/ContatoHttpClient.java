@@ -21,22 +21,18 @@ public class ContatoHttpClient {
 
     private final CustomModelConfig customModelConfig;
     private final RestClient restClient;
-    private final HubSpotTokenCache hubSpotTokenCache;
 
-    public ContatoHttpClient(CustomModelConfig customModelConfig, RestClient.Builder restClient, HubSpotTokenCache hubSpotTokenCache) {
+    public ContatoHttpClient(CustomModelConfig customModelConfig, RestClient.Builder restClient) {
         this.customModelConfig = customModelConfig;
         this.restClient = restClient.build();
-        this.hubSpotTokenCache = hubSpotTokenCache;
     }
 
-    public void createContact(ContatoRecordDTO contactData){
+    public void createContact(ContatoRecordDTO contactData, String acessToken) {
         try {
-            HubSpotResponse tokens = hubSpotTokenCache.getToken("123456");
-
             restClient.post()
                     .uri(customModelConfig.getContatoUrl())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header("Authorization", "Bearer " + tokens.getAccessToken())
+                    .header("Authorization", "Bearer " + acessToken)
                     .body(contactData)
                     .retrieve()
                     .toBodilessEntity();
@@ -45,13 +41,12 @@ public class ContatoHttpClient {
         }
     }
 
-    public List<HubSpotContactPropertiesDTO> findAllContatos() {
+    public List<HubSpotContactPropertiesDTO> findAllContatos(String acessToken) {
         try {
-            HubSpotResponse tokens = hubSpotTokenCache.getToken("123456");
 
             HubSpotResponseDTO response = restClient.get()
                     .uri(customModelConfig.getContatoUrl())
-                    .header("Authorization", "Bearer " + tokens.getAccessToken())
+                    .header("Authorization", "Bearer " + acessToken)
                     .retrieve()
                     .body(HubSpotResponseDTO.class);
 

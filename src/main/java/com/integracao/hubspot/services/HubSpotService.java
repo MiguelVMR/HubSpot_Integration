@@ -10,6 +10,6 @@ import com.integracao.hubspot.dtos.HubSpotResponse;
  * @since 14/03/2025
  */
 public interface HubSpotService {
-    void geraTokenAcess(String code);
-    void atualizaTokenAcess(String code);
+    void geraTokenAcess(String code, String state);
+    HubSpotResponse atualizaTokenAcess(String userId);
 }

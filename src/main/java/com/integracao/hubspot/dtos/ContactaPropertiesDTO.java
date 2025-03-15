@@ -6,7 +6,7 @@ package com.integracao.hubspot.dtos;
  * @author Miguel Vilela Moraes Ribeiro
  * @since 14/03/2025
  */
-public record ContactaProperties (
+public record ContactaPropertiesDTO(
         String email,
         String firstname,
         String lastname
