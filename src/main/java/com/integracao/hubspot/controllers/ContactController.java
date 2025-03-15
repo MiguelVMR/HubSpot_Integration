@@ -1,0 +1,40 @@
+package com.integracao.hubspot.controllers;
+
+import com.integracao.hubspot.controllers.interfaces.ContactControllerInterface;
+import com.integracao.hubspot.dtos.ContatoRecordDTO;
+import com.integracao.hubspot.dtos.HubSpotContactPropertiesDTO;
+import com.integracao.hubspot.services.ContatoService;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+
+/**
+ * The Class ContactController
+ *
+ * @author Miguel Vilela Moraes Ribeiro
+ * @since 12/03/2025
+ */
+@RestController
+@RequestMapping("/contacts")
+public class ContactController implements ContactControllerInterface {
+    private final ContatoService contatoService;
+
+    public ContactController(ContatoService contatoService) {
+        this.contatoService = contatoService;
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<Void> createContact(@RequestBody ContatoRecordDTO contactData) {
+        contatoService.createContact(contactData);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<HubSpotContactPropertiesDTO>> listContacts() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(contatoService.findAllContacts());
+    }
+
+}

@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hubSpot
+    username: ${USER_DB}
+    password: ${PASSWORD_DB}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non-contextual-creation: true
+
+
+custom:
+  autorizationUrl: "https://app.hubspot.com/oauth/authorize?client_id="
+  tokenUrl: "https://api.hubapi.com/oauth/v1/token"
+  contatoUrl: "https://api.hubapi.com/crm/v3/objects/contacts"
+  scope: ${SCOPE}
+  hubspotData:
+    clientId: ${CLIENT_ID}
+    clientSecret: ${CLIENT_SECRET}
+    redirectUri: ${REDIRECT_URL}
