@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @Tag(name = "Modulo de Integração com o HubSpot")
 public interface HubSpotControllerInterface {
-    @Operation(description = "Método que retorna a URL para iniciar fluxo OAuth com o HubSpot.")
+    @Operation(summary = "Método que retorna a URL para iniciar fluxo OAuth com o HubSpot.")
     @SecurityRequirement(name = "bearerAuth")
     ResponseEntity<Map<String,String>> authorize(JwtAuthenticationToken jwtToken);
 

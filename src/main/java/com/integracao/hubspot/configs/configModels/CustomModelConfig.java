@@ -15,5 +15,6 @@ public class CustomModelConfig {
     private String contatoUrl;
     private String scope;
     private String senhaAdmin;
+    private String ngrokURL;
     private HubspotData hubspotData;
 }

@@ -1,5 +1,6 @@
 package com.integracao.hubspot.controllers;
 
+import com.integracao.hubspot.controllers.interfaces.AuthControllerInterface;
 import com.integracao.hubspot.dtos.LoginRequestRecordDTO;
 import com.integracao.hubspot.dtos.LoginResponseRecordDTO;
 import com.integracao.hubspot.services.AuthService;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 15/03/2025
  */
 @RestController
-public class AuthController {
+public class AuthController implements AuthControllerInterface {
 
     private final AuthService authService;
 

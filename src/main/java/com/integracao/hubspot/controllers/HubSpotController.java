@@ -35,7 +35,7 @@ public class HubSpotController implements HubSpotControllerInterface {
                          "&redirect_uri=" + customModelConfig.getHubspotData().getRedirectUri() +
                          "&scope=" + customModelConfig.getScope() +
                          "&state=" + jwtToken.getName();
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("AutorizationURL",authUrl));
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("AutorizationURL",authUrl,"NGROK", customModelConfig.getNgrokURL()));
     }
 
     @GetMapping("/callback")

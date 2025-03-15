@@ -15,6 +15,38 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  ngrok:
+    image: wernight/ngrok
+    container_name: ngrok
+    environment:
+       NGROK_AUTHTOKEN : ${NGROK_TOKEN}
+    command: "ngrok http api:8080"
+    ports:
+      - "4040:4040"
+    networks:
+      - app-network
+
+  api:
+    build: .
+    container_name: spring_boot_api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/hubSpot
+      SPRING_DATASOURCE_USERNAME: ${USER_DB}
+      SPRING_DATASOURCE_PASSWORD: ${PASSWORD_DB}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - ngrok
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   postgres_data:
