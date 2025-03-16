@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void createUser(CreateUserDTO createUserDTO) {
+    public UserModel createUser(CreateUserDTO createUserDTO) {
         var role = roleRepository.findByName(RolesModel.Values.BASIC.name().toLowerCase());
         var userDB = userRepository.findByUsername(createUserDTO.username());
         if (userDB.isPresent()) {
@@ -44,5 +44,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(createUserDTO.password()));
         user.setRoles(Set.of(role));
         userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 }

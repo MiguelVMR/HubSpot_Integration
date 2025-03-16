@@ -8,7 +8,8 @@ import com.integracao.hubspot.models.WebhookEventModel;
 import com.integracao.hubspot.repository.WebhookEventRepository;
 import com.integracao.hubspot.services.HubSpotService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -60,16 +61,8 @@ public class HubSpotServiceImpl implements HubSpotService {
     }
 
     @Override
-    public List<WebhookEventDTO> visualizarDadosWebhookSalvos() {
-        List<WebhookEventModel> webhookEventModels = webhookEventRepository.findAll();
-        List<WebhookEventDTO> webhookEventDTOs = new ArrayList<>();
-        for (WebhookEventModel webhookEventModel : webhookEventModels) {
-            WebhookEventDTO webhookEventModelDTO = new WebhookEventDTO();
-            BeanUtils.copyProperties(webhookEventModel, webhookEventModelDTO);
-            webhookEventDTOs.add(webhookEventModelDTO);
-        }
-
-        return webhookEventDTOs;
+    public Page<WebhookEventModel> visualizarDadosWebhookSalvos(Pageable pageable) {
+        return webhookEventRepository.findAll(pageable);
     }
 
 

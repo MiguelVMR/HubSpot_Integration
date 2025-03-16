@@ -46,8 +46,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST,"/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/users").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/oauth/callback").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/oauth/webhook-contact-create-data").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/hubspot/callback").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/hubspot/webhook-contact-create-data").permitAll()
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",

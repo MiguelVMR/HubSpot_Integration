@@ -8,6 +8,9 @@ import com.integracao.hubspot.exceptions.NotFoundException;
 import com.integracao.hubspot.infra.HubSpotTokenCache;
 import com.integracao.hubspot.services.ContatoService;
 import com.integracao.hubspot.services.HubSpotService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +44,15 @@ public class ContatoServiceImpl implements ContatoService {
     }
 
     @Override
-    public List<HubSpotContactPropertiesDTO> findAllContacts(JwtAuthenticationToken jwtToken) {
+    public Page<HubSpotContactPropertiesDTO> findAllContacts(JwtAuthenticationToken jwtToken, Pageable pageable) {
         HubSpotResponse token = hubSpotTokenCache.getToken(jwtToken.getName());
         token = verificaTokenAindaValido(jwtToken, token);
-        return contatoClient.findAllContatos(token.getAccessToken());
+        List<HubSpotContactPropertiesDTO> allContatos = contatoClient.findAllContatos(token.getAccessToken());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), allContatos.size());
+        List<HubSpotContactPropertiesDTO> paginatedList = allContatos.subList(start, end);
+        return new PageImpl<>(paginatedList, pageable, allContatos.size());
     }
 
     private HubSpotResponse verificaTokenAindaValido(JwtAuthenticationToken jwtToken, HubSpotResponse token) {

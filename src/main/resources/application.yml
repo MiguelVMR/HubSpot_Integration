@@ -25,7 +25,6 @@ jwt:
   public:
     key: classpath:app.pub
 
-
 custom:
   autorizationUrl: "https://app.hubspot.com/oauth/authorize?client_id="
   tokenUrl: "https://api.hubapi.com/oauth/v1/token"

@@ -1,6 +1,7 @@
 package com.integracao.hubspot.services;
 
 import com.integracao.hubspot.dtos.CreateUserDTO;
+import com.integracao.hubspot.models.UserModel;
 
 /**
 * The Interface UserService
@@ -9,5 +10,8 @@ import com.integracao.hubspot.dtos.CreateUserDTO;
 * @since 15/03/2025
 */
 public interface UserService {
-    void createUser(CreateUserDTO createUserDTO);
+    UserModel createUser(CreateUserDTO createUserDTO);
+
+    boolean existsByUsername(String username);
+
 }

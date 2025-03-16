@@ -65,7 +65,7 @@ public class InitialConfig {
     public void updateWebhook(){
         WebHookUpdateData dados = new WebHookUpdateData();
         dados.setThrottling(new WebHookUpdateData.Throttling());
-        dados.setTargetUrl(customModelConfig.getNgrokURL() + "/oauth/webhook-contact-create-data");
+        dados.setTargetUrl(customModelConfig.getNgrokURL() + "/hubspot/webhook-contact-create-data");
          restClient.put()
                 .uri(customModelConfig.getWebhookUrl())
                 .contentType(MediaType.APPLICATION_JSON)

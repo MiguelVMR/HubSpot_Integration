@@ -3,7 +3,9 @@ package com.integracao.hubspot.services;
 
 import com.integracao.hubspot.dtos.HubSpotResponse;
 import com.integracao.hubspot.dtos.WebhookEventDTO;
-import org.springframework.http.ResponseEntity;
+import com.integracao.hubspot.models.WebhookEventModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -17,5 +19,5 @@ public interface HubSpotService {
     void geraTokenAcess(String code, String state);
     HubSpotResponse atualizaTokenAcess(String userId);
     void saveWebhookData(List<WebhookEventDTO> data);
-    List<WebhookEventDTO> visualizarDadosWebhookSalvos();
+    Page<WebhookEventModel> visualizarDadosWebhookSalvos(Pageable pageable);
 }

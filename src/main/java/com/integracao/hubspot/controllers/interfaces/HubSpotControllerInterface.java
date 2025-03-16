@@ -1,6 +1,7 @@
 package com.integracao.hubspot.controllers.interfaces;
 
 import com.integracao.hubspot.dtos.WebhookEventDTO;
+import com.integracao.hubspot.models.WebhookEventModel;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,6 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,5 +43,6 @@ public interface HubSpotControllerInterface {
 
     @Operation(summary = "Método que retorna os dados coletados pelo webhook contact.creation")
     @SecurityRequirement(name = "bearerAuth")
-    ResponseEntity<List<WebhookEventDTO>> visualizarDadosWebhookSalvos();
+    ResponseEntity<Page<WebhookEventModel>> visualizarDadosWebhookSalvos(  @RequestParam(value = "page", required = false)final Integer page,
+                                                                          @RequestParam(value = "size", required = false) final Integer size);
 }

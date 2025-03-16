@@ -3,7 +3,10 @@ package com.integracao.hubspot.controllers;
 import com.integracao.hubspot.configs.configModels.CustomModelConfig;
 import com.integracao.hubspot.controllers.interfaces.HubSpotControllerInterface;
 import com.integracao.hubspot.dtos.WebhookEventDTO;
+import com.integracao.hubspot.models.WebhookEventModel;
 import com.integracao.hubspot.services.HubSpotService;
+import com.integracao.hubspot.utils.CustomPageable;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -20,7 +23,7 @@ import java.util.Map;
  * @since 14/03/2025
  */
 @RestController
-@RequestMapping("/oauth")
+@RequestMapping("/hubspot")
 public class HubSpotController implements HubSpotControllerInterface {
     private final CustomModelConfig customModelConfig;
     private final HubSpotService hubSpotService;
@@ -43,7 +46,7 @@ public class HubSpotController implements HubSpotControllerInterface {
 
     //Metodo que recebe code do hubspot e gerar o acess e o refresh token
     @GetMapping("/callback")
-    public ResponseEntity<Void> handleOAuthCallback(@RequestParam("code") String code, @RequestParam("state") String state) {
+    public ResponseEntity<Void> handleOAuthCallback(String code, String state) {
         hubSpotService.geraTokenAcess(code, state);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -56,7 +59,7 @@ public class HubSpotController implements HubSpotControllerInterface {
     }
 
     @GetMapping("webhook-contact-create-data")
-    public ResponseEntity<List<WebhookEventDTO>> visualizarDadosWebhookSalvos() {
-        return ResponseEntity.status(HttpStatus.OK).body(hubSpotService.visualizarDadosWebhookSalvos());
+    public ResponseEntity<Page<WebhookEventModel>> visualizarDadosWebhookSalvos(Integer page, Integer size) {
+        return ResponseEntity.status(HttpStatus.OK).body(hubSpotService.visualizarDadosWebhookSalvos(CustomPageable.getInstance(page,size)));
     }
 }

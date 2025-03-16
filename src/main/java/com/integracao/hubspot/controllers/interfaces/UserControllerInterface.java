@@ -4,6 +4,7 @@ import com.integracao.hubspot.dtos.CreateUserDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -16,5 +17,5 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface UserControllerInterface {
 
     @Operation(summary = "Método que cria um usuário no sistema")
-    ResponseEntity<Void> createUser(@RequestBody CreateUserDTO createUserDTO);
+    ResponseEntity<Object> createUser(@RequestBody CreateUserDTO createUserDTO, Errors errors);
 }

@@ -5,9 +5,13 @@ import com.integracao.hubspot.dtos.HubSpotContactPropertiesDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -26,5 +30,6 @@ public interface ContactControllerInterface {
 
     @Operation(summary = "Endpoint responsável por listar os contato do HubSpot")
     @SecurityRequirement(name = "bearerAuth")
-    ResponseEntity<List<HubSpotContactPropertiesDTO>> listContacts(JwtAuthenticationToken jwtToken);
+    ResponseEntity<Page<HubSpotContactPropertiesDTO>> listContacts(JwtAuthenticationToken jwtToken, @RequestParam(value = "page", required = false) final Integer page,
+                                                                   @RequestParam(value = "size", required = false) final Integer size);
 }
