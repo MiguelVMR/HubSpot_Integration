@@ -1,65 +1,45 @@
 package com.integracao.hubspot.controllers;
 
-import com.integracao.hubspot.configs.configModels.CustomModelConfig;
-import com.integracao.hubspot.controllers.interfaces.HubSpotControllerInterface;
 import com.integracao.hubspot.dtos.WebhookEventDTO;
 import com.integracao.hubspot.models.WebhookEventModel;
-import com.integracao.hubspot.services.HubSpotService;
-import com.integracao.hubspot.utils.CustomPageable;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * The Class HubSpotController
+ * The Interface HubSpotControllerInterface
  *
  * @author Miguel Vilela Moraes Ribeiro
  * @since 14/03/2025
  */
+@Tag(name = "Modulo de Integração com o HubSpot")
 @RestController
 @RequestMapping("/hubspot")
-public class HubSpotController implements HubSpotControllerInterface {
-    private final CustomModelConfig customModelConfig;
-    private final HubSpotService hubSpotService;
-    private final RestClient restClient;
-
-    public HubSpotController(CustomModelConfig customModelConfig, HubSpotService hubSpotService, RestClient.Builder restClient) {
-        this.customModelConfig = customModelConfig;
-        this.hubSpotService = hubSpotService;
-        this.restClient = restClient.build();
-    }
-
+public interface HubSpotController {
+    @Operation(summary = "Método que retorna a URL para iniciar fluxo OAuth com o HubSpot.")
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/authorize")
-    public ResponseEntity<Map<String, String>> authorize(JwtAuthenticationToken jwtToken) {
-        String authUrl = customModelConfig.getAutorizationUrl() + customModelConfig.getHubspotData().getClientId() +
-                         "&redirect_uri=" + customModelConfig.getHubspotData().getRedirectUri() +
-                         "&scope=" + customModelConfig.getScope() +
-                         "&state=" + jwtToken.getName();
-        return ResponseEntity.status(HttpStatus.OK).body(Map.of("AutorizationURL", authUrl));
-    }
+    ResponseEntity<Map<String,String>> authorize(JwtAuthenticationToken jwtToken);
 
-    //Metodo que recebe code do hubspot e gerar o acess e o refresh token
+    @Hidden
     @GetMapping("/callback")
-    public ResponseEntity<Void> handleOAuthCallback(String code, String state) {
-        hubSpotService.geraTokenAcess(code, state);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+    ResponseEntity<Void> handleOAuthCallback(@RequestParam("code") String code,@RequestParam("state") String state);
 
-    //Metodo que recebe eventos de contact-create do hubspot
+    @Hidden
     @PostMapping("webhook-contact-create-data")
-    public void createWebhookData(@RequestBody List<WebhookEventDTO> data) {
-        System.out.println("INDO SALVAR DADOS WEBHOOK");
-        hubSpotService.saveWebhookData(data);
-    }
+    void createWebhookData(@RequestBody List<WebhookEventDTO> data);
 
+    @Operation(summary = "Método que retorna os dados coletados pelo webhook contact.creation")
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("webhook-contact-create-data")
-    public ResponseEntity<Page<WebhookEventModel>> visualizarDadosWebhookSalvos(Integer page, Integer size) {
-        return ResponseEntity.status(HttpStatus.OK).body(hubSpotService.visualizarDadosWebhookSalvos(CustomPageable.getInstance(page,size)));
-    }
+    ResponseEntity<Page<WebhookEventModel>> viewDataWebhookSaved(@RequestParam(value = "page", required = false)final Integer page,
+                                                                 @RequestParam(value = "size", required = false) final Integer size);
 }

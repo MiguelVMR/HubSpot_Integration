@@ -16,8 +16,8 @@ import java.util.List;
  * @since 14/03/2025
  */
 public interface HubSpotService {
-    void geraTokenAcess(String code, String state);
-    HubSpotResponse atualizaTokenAcess(String userId);
+    void generateTokenAcess(String code, String state);
+    HubSpotResponse updateTokenAcess(String userId);
     void saveWebhookData(List<WebhookEventDTO> data);
-    Page<WebhookEventModel> visualizarDadosWebhookSalvos(Pageable pageable);
+    Page<WebhookEventModel> viewDataWebhookSaved(Pageable pageable);
 }

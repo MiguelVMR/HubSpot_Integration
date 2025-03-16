@@ -11,7 +11,5 @@ import com.integracao.hubspot.models.UserModel;
 */
 public interface UserService {
     UserModel createUser(CreateUserDTO createUserDTO);
-
     boolean existsByUsername(String username);
-
 }

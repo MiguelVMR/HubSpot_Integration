@@ -22,7 +22,7 @@ import java.util.List;
  * @since 14/03/2025
  */
 @Service
-public class HubSpotServiceImpl implements HubSpotService {
+final class HubSpotServiceImpl implements HubSpotService {
 
     private final HubSpotHttpClient hubSpotClient;
     private final HubSpotTokenCache hubSpotTokenCache;
@@ -35,15 +35,15 @@ public class HubSpotServiceImpl implements HubSpotService {
     }
 
     @Override
-    public void geraTokenAcess(String code, String state) {
-        HubSpotResponse hubSpotResponse = hubSpotClient.geraTokenAcess(code);
+    public void generateTokenAcess(String code, String state) {
+        HubSpotResponse hubSpotResponse = hubSpotClient.generateTokenAcess(code);
         hubSpotTokenCache.saveTokens(state, hubSpotResponse);
     }
 
     @Override
-    public HubSpotResponse atualizaTokenAcess(String userId) {
+    public HubSpotResponse updateTokenAcess(String userId) {
         HubSpotResponse hubSpotCredencials = hubSpotTokenCache.getToken(userId);
-        HubSpotResponse hubSpotResponse = hubSpotClient.atualizaTokenAcess(hubSpotCredencials);
+        HubSpotResponse hubSpotResponse = hubSpotClient.updateTokenAcess(hubSpotCredencials);
         return hubSpotTokenCache.updateToken(userId, hubSpotResponse);
     }
 
@@ -61,7 +61,7 @@ public class HubSpotServiceImpl implements HubSpotService {
     }
 
     @Override
-    public Page<WebhookEventModel> visualizarDadosWebhookSalvos(Pageable pageable) {
+    public Page<WebhookEventModel> viewDataWebhookSaved(Pageable pageable) {
         return webhookEventRepository.findAll(pageable);
     }
 

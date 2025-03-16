@@ -1,5 +1,7 @@
 package com.integracao.hubspot.dtos;
 
+import jakarta.validation.Valid;
+
 /**
 * The Record ContatoRecordDTO
 *
@@ -7,6 +9,6 @@ package com.integracao.hubspot.dtos;
 * @since 14/03/2025
 */
 public record ContatoRecordDTO(
-        ContactaPropertiesDTO properties
+        @Valid ContactaPropertiesDTO properties
 ) {
 }

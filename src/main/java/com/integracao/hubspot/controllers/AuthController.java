@@ -1,32 +1,25 @@
 package com.integracao.hubspot.controllers;
 
-import com.integracao.hubspot.controllers.interfaces.AuthControllerInterface;
 import com.integracao.hubspot.dtos.LoginRequestRecordDTO;
 import com.integracao.hubspot.dtos.LoginResponseRecordDTO;
-import com.integracao.hubspot.services.AuthService;
-import org.springframework.http.HttpStatus;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * The Class TokenController
+ * The Interface AuthControllerInterface
  *
  * @author Miguel Vilela Moraes Ribeiro
  * @since 15/03/2025
  */
+@Tag(name = "Módulo de login do sistema")
 @RestController
-public class AuthController implements AuthControllerInterface {
+public interface AuthController {
 
-    private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
-
+    @Operation(summary = "Endpoint que faz o login do usuário no sistema")
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseRecordDTO> login(@RequestBody LoginRequestRecordDTO loginRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginRequest));
-    }
+    ResponseEntity<LoginResponseRecordDTO> login(@RequestBody LoginRequestRecordDTO loginRequest);
 }

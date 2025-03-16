@@ -10,6 +10,5 @@ import com.integracao.hubspot.dtos.LoginResponseRecordDTO;
  * @since 15/03/2025
  */
 public interface AuthService {
-
     LoginResponseRecordDTO login(LoginRequestRecordDTO loginRequest);
 }

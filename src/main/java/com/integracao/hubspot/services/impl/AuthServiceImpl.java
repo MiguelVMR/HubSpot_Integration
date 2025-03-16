@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.stream.Collectors;
@@ -23,11 +22,9 @@ import java.util.stream.Collectors;
  * @since 15/03/2025
  */
 @Service
-public class AuthServiceImpl implements AuthService {
+final class AuthServiceImpl implements AuthService {
     private final JwtEncoder jwtEncoder;
-
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     public AuthServiceImpl(JwtEncoder jwtEncoder, UserRepository userRepository, PasswordEncoder passwordEncoder) {
@@ -37,7 +34,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Transactional
     public LoginResponseRecordDTO login(LoginRequestRecordDTO loginRequest) {
         var user = userRepository.findByUsername(loginRequest.username());
         if(user.isEmpty() || !user.get().isLoginCorrect(loginRequest, passwordEncoder)) {

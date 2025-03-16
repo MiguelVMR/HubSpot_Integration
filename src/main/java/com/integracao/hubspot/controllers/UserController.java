@@ -1,39 +1,25 @@
 package com.integracao.hubspot.controllers;
 
-import com.integracao.hubspot.controllers.interfaces.UserControllerInterface;
 import com.integracao.hubspot.dtos.CreateUserDTO;
-import com.integracao.hubspot.services.UserService;
-import com.integracao.hubspot.validations.UserValidator;
-import org.springframework.http.HttpStatus;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * The Class UserController
+ * The Interface UserController
  *
  * @author Miguel Vilela Moraes Ribeiro
  * @since 15/03/2025
  */
+@Tag(name = "Módulo de Usuarios do Sistema")
 @RestController
-public class UserController implements UserControllerInterface {
-    private final UserService userService;
-    private final UserValidator userValidator;
+public interface UserController {
 
-    public UserController(UserService userService, UserValidator userValidator) {
-        this.userService = userService;
-        this.userValidator = userValidator;
-    }
-
+    @Operation(summary = "Método que cria um usuário no sistema")
     @PostMapping("/users")
-    public ResponseEntity<Object> createUser(@RequestBody @Validated CreateUserDTO createUserDTO, Errors errors) {
-        userValidator.validate(createUserDTO, errors);
-        if(errors.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.getFieldError().getDefaultMessage());
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(createUserDTO));
-    }
+    ResponseEntity<Object> createUser(@RequestBody CreateUserDTO createUserDTO, Errors errors);
 }

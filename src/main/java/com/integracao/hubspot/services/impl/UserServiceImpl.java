@@ -9,7 +9,6 @@ import com.integracao.hubspot.repository.UserRepository;
 import com.integracao.hubspot.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -20,7 +19,7 @@ import java.util.Set;
  * @since 15/03/2025
  */
 @Service
-public class UserServiceImpl implements UserService {
+final class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -32,7 +31,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserModel createUser(CreateUserDTO createUserDTO) {
         var role = roleRepository.findByName(RolesModel.Values.BASIC.name().toLowerCase());
         var userDB = userRepository.findByUsername(createUserDTO.username());

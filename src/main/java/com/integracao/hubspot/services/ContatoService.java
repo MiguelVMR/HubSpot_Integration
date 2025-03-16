@@ -15,8 +15,6 @@ import java.util.List;
  * @since 14/03/2025
  */
 public interface ContatoService {
-
     void createContact(ContatoRecordDTO contactData, JwtAuthenticationToken jwtToken);
-
     Page<HubSpotContactPropertiesDTO> findAllContacts(JwtAuthenticationToken jwtToken, Pageable pageable);
 }

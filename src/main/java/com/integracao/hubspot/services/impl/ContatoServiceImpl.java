@@ -25,7 +25,7 @@ import java.util.Objects;
  * @since 14/03/2025
  */
 @Service
-public class ContatoServiceImpl implements ContatoService {
+final class ContatoServiceImpl implements ContatoService {
     private final ContatoHttpClient contatoClient;
     private final HubSpotTokenCache hubSpotTokenCache;
     private final HubSpotService hubSpotService;
@@ -61,7 +61,7 @@ public class ContatoServiceImpl implements ContatoService {
         }
 
         if (token.getTokenExpiration().isBefore(Instant.now())){
-            token = hubSpotService.atualizaTokenAcess(jwtToken.getName());
+            token = hubSpotService.updateTokenAcess(jwtToken.getName());
         }
 
         return token;
