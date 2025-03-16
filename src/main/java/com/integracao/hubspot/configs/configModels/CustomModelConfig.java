@@ -16,5 +16,6 @@ public class CustomModelConfig {
     private String scope;
     private String senhaAdmin;
     private String ngrokURL;
+    private String webhookUrl;
     private HubspotData hubspotData;
 }

@@ -1,6 +1,7 @@
 package com.integracao.hubspot.infra;
 
 import com.integracao.hubspot.configs.configModels.CustomModelConfig;
+import com.integracao.hubspot.dtos.WebHookUpdateData;
 import com.integracao.hubspot.models.RolesModel;
 import com.integracao.hubspot.models.UserModel;
 import com.integracao.hubspot.repository.RoleRepository;
@@ -8,8 +9,12 @@ import com.integracao.hubspot.repository.UserRepository;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
 
 import java.util.Set;
 
@@ -20,17 +25,19 @@ import java.util.Set;
  * @since 15/03/2025
  */
 @Configuration
-public class AdminUserConfig {
+public class InitialConfig {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final CustomModelConfig customModelConfig;
+    private final RestClient restClient;
 
-    public AdminUserConfig(RoleRepository roleRepository, PasswordEncoder passwordEncoder, UserRepository userRepository, CustomModelConfig customModelConfig) {
+    public InitialConfig(RoleRepository roleRepository, PasswordEncoder passwordEncoder, UserRepository userRepository, CustomModelConfig customModelConfig, RestClient.Builder restClient) {
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.customModelConfig = customModelConfig;
+        this.restClient = restClient.build();
     }
 
     @EventListener(ApplicationReadyEvent.class)
@@ -52,4 +59,19 @@ public class AdminUserConfig {
                 }
         );
     }
+
+    //Metodo que atualiza configurações do webhook com a url atual do ngrok (Muda toda vez que inicia a aplicação)
+    @EventListener(ApplicationReadyEvent.class)
+    public void updateWebhook(){
+        WebHookUpdateData dados = new WebHookUpdateData();
+        dados.setThrottling(new WebHookUpdateData.Throttling());
+        dados.setTargetUrl(customModelConfig.getNgrokURL() + "/oauth/webhook-contact-create-data");
+         restClient.put()
+                .uri(customModelConfig.getWebhookUrl())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(dados)
+                .retrieve()
+                .toBodilessEntity();
+    }
+
 }

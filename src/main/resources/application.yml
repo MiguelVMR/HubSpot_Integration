@@ -33,6 +33,7 @@ custom:
   scope: ${SCOPE}
   senhaAdmin: ${SENHA_ADMIN}
   ngrokURL: ${NGROK_URL}
+  webhookUrl: ${URL_WEBHOOK}
   hubspotData:
     clientId: ${CLIENT_ID}
     clientSecret: ${CLIENT_SECRET}
