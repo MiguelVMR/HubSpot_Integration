@@ -1,9 +1,12 @@
 FROM openjdk:21-slim AS builder
-RUN apt-get update && apt-get install -y maven
+RUN apt-get update && apt-get install -y maven openssl
 WORKDIR /app
 COPY pom.xml mvnw ./
 COPY .mvn .mvn
 COPY src /app/src
+RUN cd /app/src/main/resources && \
+    openssl genrsa -out app.key 2048 && \
+    openssl rsa -in app.key -pubout -out app.pub
 RUN chmod +x mvnw
 RUN ./mvnw clean package -DskipTests
 
