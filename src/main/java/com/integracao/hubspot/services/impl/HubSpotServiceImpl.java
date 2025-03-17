@@ -3,6 +3,7 @@ package com.integracao.hubspot.services.impl;
 import com.integracao.hubspot.client.HubSpotHttpClient;
 import com.integracao.hubspot.dtos.HubSpotResponse;
 import com.integracao.hubspot.dtos.WebhookEventDTO;
+import com.integracao.hubspot.exceptions.WebhookException;
 import com.integracao.hubspot.infra.HubSpotTokenCache;
 import com.integracao.hubspot.models.WebhookEventModel;
 import com.integracao.hubspot.repository.WebhookEventRepository;
@@ -49,6 +50,9 @@ final class HubSpotServiceImpl implements HubSpotService {
 
     @Override
     public void saveWebhookData(List<WebhookEventDTO> data) {
+        if(data.isEmpty()){
+           throw new WebhookException("Webhook data list cannot be empty");
+        }
         List<WebhookEventModel> webhookEventModels = new ArrayList<>();
 
         for (WebhookEventDTO webhookEventDTO : data) {

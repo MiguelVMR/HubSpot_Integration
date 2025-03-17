@@ -43,6 +43,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorRecorddResponse(HttpStatus.UNAUTHORIZED.value(),ex.getMessage(),null));
     }
 
+    @ExceptionHandler(WebhookException.class)
+    public ResponseEntity<ErrorRecorddResponse> handleIntegrationException(WebhookException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorRecorddResponse(HttpStatus.BAD_REQUEST.value(),ex.getMessage(),null));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorRecorddResponse> handleValidatedException(MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
